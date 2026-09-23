@@ -1,16 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <netinet.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include "testtypes.h"
 
-#define T_CTL "CTL"
-#define T_MSG "MSG"
-#define F_SESSION_START "SST"
-#define F_SESSION_END "SED"
+int try_connect(const char* ip_addr, int port){
+  int handle = socket(AF_INET, SOCK_STREAM, 0);
+  sockaddr_in server;
+  server.sin_family = AF_INET;
+  server.sin_port = htons(port);
+  server.sin_addr.s_addr = inet_addr(&ip_addr);
 
-int send_flag(int handle, char* flag)
-{
- char flg[] = "MSG";
- return send(handle, &flg, (size_t) 3,0) ;
+  if (connect(handle, (struct sockaddr*) &server, sizeof(server)) < 0) 
+    close(handle);
+  else return handle;
+};
+
+int host_connection(int port){
+  int handle = socket(AF_INET, SOCK_STREAM, 0);
+  sockaddr_in server;
+  server.sin_family = AF_INET;
+  server.sin_port = htons(port);
+  server.sin_addr.s_addr = INADDR_ANY;
+
+
+  if (bind(handle, (struct sockaddr*) &server, sizeof(server)) < 0) 
+    close(handle);
+  else return handle;
 };
 

@@ -2,25 +2,30 @@
 #define TESTTYPES_H
 
 // types of buffers
-#define T_CONTROL "CTL" // label of message with interpreter commands
-#define T_DATA "DAT" // label of message with user-send data 
-#define T_FLAG "FLG" // label of flag
-#define T_ERROR "ERR" // label of error 
-#define _MSG_BUFFER_SIZE_ 2048 // max message buffer size in bytes  
+#define T_DATA "DAT" // label of message with data 
+#define T_CTRL "CTL" // label of control message 
+//
+
+// structures
+typedef struct control_message{
+  const char[] = T_CTRL;
+  char ctl_data[64];
+} control_message;
+
+typedef struct data_message{
+  const char[] = T_DATA;
+  void* buf;
+  size_t buff_size;
+} data_message;
+
+// flags //
+#define F_SESSIONSTART 0x01
+#define F_SESSIONEND 0xFF
+//       //
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-// structure of message pakage
-typedef struct pakage{
-  char type[3];
-  void* buf;
-  size_t pkgsize;
-} package;
-
-extern int send_flag(int handle, char* flag);
-// it sends flags, ...thats it
 
 #ifdef __cplusplus
 }
