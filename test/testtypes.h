@@ -8,16 +8,17 @@
 
 // structures
 typedef struct control_message{
-  const char[] = T_CTRL;
   char ctl_data[64];
 } control_message;
 
 typedef struct data_message{
-  const char[] = T_DATA;
   void* buf;
   size_t buff_size;
 } data_message;
 
+typedef struct socket_mdata{
+  int source_handle, destination_handle;
+} socket_mdata;
 // flags //
 #define F_SESSIONSTART 0x01
 #define F_SESSIONEND 0xFF
@@ -26,6 +27,10 @@ typedef struct data_message{
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern int try_connect(const char* ip_addr, int port);
+
+extern socket_mdata host_connection(int port);
 
 #ifdef __cplusplus
 }
